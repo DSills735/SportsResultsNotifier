@@ -13,8 +13,8 @@ internal class Email
         string fromEmail = "david.sills100@gmail.com";
         string toEmail = "recipient@example.com";
         string password = "your_email_password";
-        string subject = "test";
-        string body = "This is a test email from C# application.";
+        //string subject = "test";
+        //string body = "This is a test email from C# application.";
 
         using (MailMessage mail = new MailMessage())
         {
