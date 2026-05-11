@@ -37,7 +37,7 @@ internal class BasketballScanner
         }
         else
         {
-            Console.WriteLine("No games found on the page.");
+            Console.WriteLine("No NBA games found on the page.");
         }
 
     }
