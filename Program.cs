@@ -5,7 +5,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        TimeOnly runningTime = new TimeOnly(8, 0, 0);
+        TimeOnly runningTime = new TimeOnly(23, 0, 0); //11PM
         Console.WriteLine($"Waiting until {runningTime} to scan...");
 
         while (true)
