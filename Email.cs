@@ -1,20 +1,32 @@
 ﻿using System.Net.Mail;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SportsResultsNotifier;
 
 internal class Email
 {
-        
-    public static void Send(string subject, string body)
+
+    public static void Send(List<Game> games)
     {
-       string smtpAddress = "smtp.gmail.com";
+        string smtpAddress = "smtp.gmail.com";
         int portNumber = 587;
         bool enableSSL = true;
         string fromEmail = "david.sills100@gmail.com";
         string toEmail = "recipient@example.com";
         string password = "your_email_password";
-        
+        string subject = "Sports Results Notification";
+        string body = "Here are the latest sports results: \n";
 
+        foreach (Game game in games)
+        {
+            string res = $"\n\n{game.Winner} beat the  {game.Loser} with a score of {game.Team2Score} to {game.Team1Score}";
+            body += res;
+            res = "";
+        }
+
+
+        /*
         using (MailMessage mail = new MailMessage())
         {
             mail.From = new MailAddress(fromEmail);
@@ -29,5 +41,14 @@ internal class Email
                 smtp.Send(mail);
             }
         }
+        */
+
+
+    TestEmailBodyOutput(body);
     }
+    internal static void TestEmailBodyOutput(string t){
+
+        Console.WriteLine($"{t}");
+        }
+    
 }
