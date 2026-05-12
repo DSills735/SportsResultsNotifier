@@ -1,16 +1,15 @@
 ﻿namespace SportsResultsNotifier;
 
-internal class Game
+public class Game
 {
-    public string Team1 { get; set; }
-    public int Team1Score { get; set; }
-    public string Team2 { get; set; }
-    public int Team2Score { get; set; }
-
-    public string Winner;
-
-    public string Loser;
-   
+    public string Team1 { get; }
+    public int Team1Score { get; }
+    public string Team2 { get; }
+    public int Team2Score { get; }
+    public string Winner { get; }
+    public string Loser { get; }
+    public int WinnerScore { get; }
+    public int LoserScore { get; }
 
     public Game(string team1, int team1Score, string team2, int team2Score, string winner, string loser)
     {
@@ -20,5 +19,7 @@ internal class Game
         Team2Score = team2Score;
         Winner = winner;
         Loser = loser;
+        WinnerScore = winner == team1 ? team1Score : team2Score;
+        LoserScore = loser == team1 ? team1Score : team2Score;
     }
 }

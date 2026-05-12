@@ -11,34 +11,41 @@ internal class BasketballScanner
 
         var games = document.DocumentNode.SelectNodes("//div[contains(@class, 'game_summary')]");
         List<Game> gameList = new List<Game>();
-        if (games != null)
-        {
-            foreach (var game in games)
-            {
-                
-                var teams = game.SelectNodes(".//tr");
 
-                if (teams != null && teams.Count >= 2)
-                {
-                    var team1 = game.SelectSingleNode(".//tr[1]/td[1]/a").InnerText.Trim();
-                    var team1Score = game.SelectSingleNode(".//tr[1]/td[2]").InnerText.Trim();
-                    var team2 = game.SelectSingleNode(".//tr[2]/td[1]/a").InnerText.Trim();
-                    var team2Score = game.SelectSingleNode(".//tr[2]/td[2]").InnerText.Trim();
-                    var winner = int.Parse(team1Score) > int.Parse(team2Score) ? team1 : team2;
-                    var loser = int.Parse(team1Score) < int.Parse(team2Score) ? team1 : team2;
-                    //Console.WriteLine($"Game Found: {team1} Score: {team1Score} vs {team2} Score: {team2Score}");
-                    
-                    //Console.WriteLine($"Winner: {winner}");
-                                        gameList.Add(new Game(team1, int.Parse(team1Score), team2, int.Parse(team2Score), winner, loser));
-                }
-               // Email.Send(gameList);
-            }
-            Email.Send(gameList);
-        }
-        else
+        if (games == null)
+            return;
+
+        foreach (var game in games)
         {
-            Console.WriteLine("No NBA games found on the page.");
+            var rows = game.SelectNodes(".//tr");
+
+            if (rows == null || rows.Count < 2)
+                continue;
+
+            var team1Node = game.SelectSingleNode(".//tr[1]/td[1]/a");
+            var team1ScoreNode = game.SelectSingleNode(".//tr[1]/td[2]");
+            var team2Node = game.SelectSingleNode(".//tr[2]/td[1]/a");
+            var team2ScoreNode = game.SelectSingleNode(".//tr[2]/td[2]");
+
+            if (team1Node == null || team1ScoreNode == null || team2Node == null || team2ScoreNode == null)
+                continue;
+
+            string team1 = team1Node.InnerText.Trim();
+            string team2 = team2Node.InnerText.Trim();
+
+            if (!int.TryParse(team1ScoreNode.InnerText.Trim(), out int team1Score) ||
+                !int.TryParse(team2ScoreNode.InnerText.Trim(), out int team2Score))
+                continue;
+
+            if (team1Score == team2Score)
+                continue;
+
+            string winner = team1Score > team2Score ? team1 : team2;
+            string loser = team1Score < team2Score ? team1 : team2;
+
+            gameList.Add(new Game(team1, team1Score, team2, team2Score, winner, loser));
         }
 
+        Email.Send(gameList);
     }
 }
